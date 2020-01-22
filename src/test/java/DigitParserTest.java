@@ -22,4 +22,15 @@ public class DigitParserTest {
         };
         assertEquals(0, parser.parse(zero));
     }
+
+    @Test
+    public void shouldBeOne() {
+        var zero = new String[]{
+                "   ",
+                "  |",
+                "  |",
+                "   "
+        };
+        assertEquals(1, parser.parse(zero));
+    }
 }
