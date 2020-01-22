@@ -1,36 +1,42 @@
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DigitParserTest {
 
-    private DigitParser parser;
+    private static DigitParser parser;
 
-    @BeforeEach
-    void setUp() {
-        this.parser = new DigitParser();
+    @BeforeAll
+    static void beforeAll() {
+        parser = new DigitParser();
     }
 
-    @Test
-    public void shouldBeZero() {
-        var zero = new String[]{
-                " _ ",
-                "| |",
-                "|_|",
-                "   "
-        };
-        assertEquals(0, parser.parse(zero));
+    @ParameterizedTest(name = "should parse {1}")
+    @MethodSource("provideDigitsAndNumbers")
+    public void digitShouldEqualInput(String[] input, int digit) {
+        assertEquals(digit, parser.parse(input));
     }
 
-    @Test
-    public void shouldBeOne() {
-        var zero = new String[]{
-                "   ",
-                "  |",
-                "  |",
-                "   "
-        };
-        assertEquals(1, parser.parse(zero));
+    private static Stream<Arguments> provideDigitsAndNumbers() {
+        return Stream.of(
+                Arguments.of(new String[]{
+                        " _ ",
+                        "| |",
+                        "|_|",
+                        "   "
+                }, 0),
+                Arguments.of(new String[]{
+                        "   ",
+                        "  |",
+                        "  |",
+                        "   "
+                }, 1)
+        );
     }
+
 }
